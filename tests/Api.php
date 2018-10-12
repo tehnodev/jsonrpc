@@ -10,19 +10,23 @@ class Api {
         return $foo;
     }
 
-    function twoParams($foo, $bar) {
-        return [$foo, $bar];
-    }
-
     function optParam($foo = 'foo') {
         return $foo;
     }
 
+    function twoParams($foo, $bar) {
+        return ['foo' => $foo, 'bar' => $bar];
+    }
+
     function twoParamsWithOpt($foo, $bar, $baz = 'baz') {
-        return [$foo, $bar, $baz];
+        return ['foo' => $foo, 'bar' => $bar, 'baz' => $baz];
     }
 
     function typedParams(int $foo, string $bar, array $baz = []) {
-        return [$foo, $bar, $baz];
+        return ['foo' => $foo, 'bar' => $bar, 'baz' => $baz];
+    }
+
+    function throwEx() {
+        throw new \Exception('Foo', 123);
     }
 }

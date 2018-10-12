@@ -29,21 +29,32 @@ class Server
             return (string) (new Error(-32601, 'Method not found', $req->method()));
         }
 
-        // $refl = [];
-        // $class = new \ReflectionClass($this->api);
-        // foreach ($class->getMethods() as $method) {
-        //     foreach ($method->getParameters() as $param) {
-        //         $refl[$method->name][$param->getName()] = [
-        //             'type' => (string) $param->getType(),
-        //             'position' => $param->getPosition(),
-        //             'optional' => $param->isOptional()
-        //         ];
+        $method = $class->getMethod($req->method());
+        if (count($req->params()) < $method->getNumberOfRequiredParameters()) {
+            return (string) (new Error(-32602, 'Invalid params', 'Params count'));
+        }
+        if (count($req->params()) > $method->getNumberOfParameters()) {
+            return (string) (new Error(-32602, 'Invalid params', 'Params count'));
+        }
 
-        //         if ($param->isDefaultValueAvailable()) {
-        //             $refl[$method->name][$param->getName()]['default'] = $param->getDefaultValue();
-        //         }
-        //     }
-        // }
-        // print_r($refl);
+        $params = [];
+        foreach ($method->getParameters() as $param) {
+            if (isset($req->params()[$param->getPosition()])) {
+                $params[] = $req->params()[$param->getPosition()];
+            } elseif (isset($req->params()[$param->getName()])) {
+                $params[] = $req->params()[$param->getName()];
+            } else {
+                if ($param->isDefaultValueAvailable()) {
+                    $params[] = $param->getDefaultValue();
+                } else {
+                    return (string) (new Error(-32602, 'Invalid params'));
+                }
+            }
+        }
+
+        $m = $req->method();
+        $resp = $this->api->$m(...$params);
+
+        return (string) (new Response($req->id(), $resp));
     }
 }
