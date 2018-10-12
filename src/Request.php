@@ -10,6 +10,18 @@ class Request
 
     public function __construct($id, $method, $params = array())
     {
+        if (!self::isValidId($id)) {
+            throw new \InvalidArgumentException('id');
+        }
+        
+        if (!self::isValidMethod($method)) {
+            throw new \InvalidArgumentException('method');
+        }
+
+        if (!self::isValidParams($params)) {
+            throw new \InvalidArgumentException('params');
+        }
+
         $this->id = $id;
         $this->method = $method;
         $this->params = $params;
@@ -30,22 +42,19 @@ class Request
         if (empty($req->method)) {
             throw new \InvalidArgumentException('method', -32600);
         }
-        if (!is_string($req->method)) {
+        if (!self::isValidMethod($req->method)) {
             throw new \InvalidArgumentException('method', -32600);
         }
-        if (strtolower(substr($req->method, 0, 4)) == 'rpc.') {
-            throw new \InvalidArgumentException('method', -32600);
-        }
-
-        if (property_exists($req, 'id')) {
-            if (!($req->id === null || is_string($req->id) || is_int($req->id))) {
-                throw new \InvalidArgumentException('id', -32600);
+        
+        if (property_exists($req, 'params')) {
+            if (!self::isValidParams($req->params)) {
+                throw new \InvalidArgumentException('params', -32600);
             }
         }
 
-        if (isset($req->params)) {
-            if (!is_array($req->params)) {
-                throw new \InvalidArgumentException('params', -32600);
+        if (property_exists($req, 'id')) {
+            if (!self::isValidId($req->id)) {
+                throw new \InvalidArgumentException('id', -32600);
             }
         }
 
@@ -83,5 +92,24 @@ class Request
         }
 
         return json_encode($req);
+    }
+
+    protected static function isValidMethod($name) {
+        if (!is_string($name)) {
+            return false;
+        }
+        if (strtolower(substr($name, 0, 4)) == 'rpc.') {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    protected static function isValidParams($params) {
+        return is_array($params);
+    }
+
+    protected static function isValidId($id) {
+        return $id === null || is_string($id) || is_int($id);
     }
 }

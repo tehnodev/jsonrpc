@@ -14,6 +14,24 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $req);
     }
 
+    function testConstruct_invalidId() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('id');
+        new Request([], 'add');
+    }
+
+    function testConstruct_invalidMethod() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('method');
+        new Request(1, ['add']);
+    }
+
+    function testConstruct_invalidParams() {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('params');
+        new Request(1, 'add', '1,2');
+    }
+
     public function testParse()
     {
         $req = Request::parse(json_encode([
@@ -155,8 +173,8 @@ class RequestTest extends TestCase
         $req = new Request(1, 'add');
         $this->assertEmpty($req->params());
         
-        $req = new Request(1, 'add', '1');
-        $this->assertEquals('1', $req->params());
+        $req = new Request(1, 'add', [1, 2]);
+        $this->assertEquals([1, 2], $req->params());
     }
 
     public function testStringConversion()
