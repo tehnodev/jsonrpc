@@ -7,7 +7,8 @@ class Server
 {
     protected $api = null;
 
-    function __construct(object $api) {
+    public function __construct(object $api)
+    {
         $this->api = $api;
     }
     

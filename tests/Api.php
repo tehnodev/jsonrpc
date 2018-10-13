@@ -4,39 +4,49 @@ namespace Tehnodev\JsonRpc\Test;
 
 use Tehnodev\JsonRpc\Exception as JsonRpcException;
 
-class Api {
-    function noParams() {
+class Api
+{
+    public function noParams()
+    {
     }
 
-    function oneParam($foo) {
+    public function oneParam($foo)
+    {
         return $foo;
     }
 
-    function optParam($foo = 'foo') {
+    public function optParam($foo = 'foo')
+    {
         return $foo;
     }
 
-    function twoParams($foo, $bar) {
+    public function twoParams($foo, $bar)
+    {
         return ['foo' => $foo, 'bar' => $bar];
     }
 
-    function twoParamsWithOpt($foo, $bar, $baz = 'baz') {
+    public function twoParamsWithOpt($foo, $bar, $baz = 'baz')
+    {
         return ['foo' => $foo, 'bar' => $bar, 'baz' => $baz];
     }
 
-    function typedParams(int $foo, string $bar, array $baz = []) {
+    public function typedParams(int $foo, string $bar, array $baz = [])
+    {
         return ['foo' => $foo, 'bar' => $bar, 'baz' => $baz];
     }
 
-    function throwException() {
+    public function throwException()
+    {
         throw new \Exception('Foo');
     }
 
-    function throwExceptionWithCode() {
+    public function throwExceptionWithCode()
+    {
         throw new \Exception('Foo', 123);
     }
 
-    function throwExceptionWithData() {
+    public function throwExceptionWithData()
+    {
         throw new JsonRpcException('FooBar', 123, ['foo' => 'bar']);
     }
 }

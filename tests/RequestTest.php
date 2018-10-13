@@ -14,19 +14,22 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $req);
     }
 
-    function testConstruct_invalidId() {
+    public function testConstruct_invalidId()
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('id');
         new Request([], 'add');
     }
 
-    function testConstruct_invalidMethod() {
+    public function testConstruct_invalidMethod()
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('method');
         new Request(1, ['add']);
     }
 
-    function testConstruct_invalidParams() {
+    public function testConstruct_invalidParams()
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('params');
         new Request(1, 'add', '1,2');
@@ -156,7 +159,8 @@ class RequestTest extends TestCase
         ]));
     }
 
-    function testUndefinedProperty() {
+    public function testUndefinedProperty()
+    {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Undefined property foo');
         $req = new Request(1, 'add');

@@ -64,7 +64,8 @@ class Request
         return new self($id, $req['method'], $params);
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         switch ($name) {
             case 'method':
                 return $this->method;
@@ -95,7 +96,8 @@ class Request
         return json_encode($req);
     }
 
-    protected static function isValidMethod($name) {
+    protected static function isValidMethod($name)
+    {
         if (!is_string($name)) {
             return false;
         }
@@ -106,11 +108,13 @@ class Request
         return true;
     }
     
-    protected static function isValidParams($params) {
+    protected static function isValidParams($params)
+    {
         return is_array($params);
     }
 
-    protected static function isValidId($id) {
+    protected static function isValidId($id)
+    {
         return $id === null || is_string($id) || is_int($id);
     }
 }

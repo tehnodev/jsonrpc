@@ -44,7 +44,8 @@ class ServerTest extends TestCase
         $this->assertEquals('Invalid params', $res->error->message);
     }
 
-    function testApi() {
+    public function testApi()
+    {
         $server = new Server(new Api());
         
         $res = $server->respond(new Request(123, 'noParams'));

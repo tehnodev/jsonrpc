@@ -5,7 +5,8 @@ use Tehnodev\JsonRpc\Exception as JsonRpcException;
 
 class ExceptionTest extends TestCase
 {
-    function testException() {
+    public function testException()
+    {
         try {
             throw new JsonRpcException('Foo');
         } catch (JsonRpcException $e) {
