@@ -53,7 +53,17 @@ class Server
         }
 
         $m = $req->method;
-        $resp = $this->api->$m(...$params);
+        try {
+            $resp = $this->api->$m(...$params);
+        } catch (Exception $e) {
+            $data = $e->getData();
+            if ($data === null) {
+                return (string) (new Error($e->getCode(), $e->getMessage()));
+            }
+            return (string) (new Error($e->getCode(), $e->getMessage(), $data));
+        } catch (\Exception $e) {
+            return (string) (new Error($e->getCode(), $e->getMessage()));
+        }
 
         return (string) (new Response($req->id, $resp));
     }

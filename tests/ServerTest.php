@@ -116,5 +116,16 @@ class ServerTest extends TestCase
         $this->assertEquals('foo', $data->result->bar);
         $this->assertEquals('bar', $data->result->baz);
         $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'throwException'));
+        $data = json_decode($res);
+        $this->assertEquals('Foo', $data->error->message);
+        $this->assertEquals(0, $data->error->code);
+
+        $res = $server->respond(new Request(123, 'throwExceptionWithData'));
+        $data = json_decode($res, true);
+        $this->assertEquals('FooBar', $data['error']['message']);
+        $this->assertEquals(123, $data['error']['code']);
+        $this->assertEquals(['foo' => 'bar'], $data['error']['data']);
     }
 }
