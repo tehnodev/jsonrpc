@@ -4,9 +4,9 @@ namespace Tehnodev\JsonRpc;
 
 class Request
 {
-    protected $id = null;
     protected $method = '';
     protected $params = array();
+    protected $id = null;
 
     public function __construct($id, $method, $params = array())
     {
@@ -64,16 +64,17 @@ class Request
         return new self($id, $req['method'], $params);
     }
 
-    function id() {
-        return $this->id;
-    }
-
-    function method() {
-        return $this->method;
-    }
-
-    function params() {
-        return $this->params;
+    public function __get($name) {
+        switch ($name) {
+            case 'method':
+                return $this->method;
+            case 'params':
+                return $this->params;
+            case 'id':
+                return $this->id;
+            default:
+                throw new \Exception('Undefined property '.$name);
+        }
     }
 
     public function __toString()

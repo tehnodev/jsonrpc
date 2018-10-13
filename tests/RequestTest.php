@@ -156,25 +156,11 @@ class RequestTest extends TestCase
         ]));
     }
 
-    function testId() {
-        $req = new Request(null, 'add');
-        $this->assertNull($req->id());
-
-        $req = new Request(10, 'add');
-        $this->assertEquals(10, $req->id());
-    }
-
-    function testMethod() {
+    function testUndefinedProperty() {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Undefined property foo');
         $req = new Request(1, 'add');
-        $this->assertEquals('add', $req->method());
-    }
-
-    function testParams() {
-        $req = new Request(1, 'add');
-        $this->assertEmpty($req->params());
-        
-        $req = new Request(1, 'add', [1, 2]);
-        $this->assertEquals([1, 2], $req->params());
+        $req->foo;
     }
 
     public function testStringConversion()
