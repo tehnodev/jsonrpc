@@ -29,39 +29,39 @@ class Request
 
     public static function parse($data)
     {
-        $req = json_decode($data);
+        $req = json_decode($data, true);
 
         if ($req === null) {
             throw new \InvalidArgumentException('Parse error', -32700);
         }
 
-        if (empty($req->jsonrpc) || $req->jsonrpc !== '2.0') {
+        if (empty($req['jsonrpc']) || $req['jsonrpc'] !== '2.0') {
             throw new \InvalidArgumentException('jsonrpc', -32600);
         }
 
-        if (empty($req->method)) {
+        if (empty($req['method'])) {
             throw new \InvalidArgumentException('method', -32600);
         }
-        if (!self::isValidMethod($req->method)) {
+        if (!self::isValidMethod($req['method'])) {
             throw new \InvalidArgumentException('method', -32600);
         }
         
-        if (property_exists($req, 'params')) {
-            if (!self::isValidParams($req->params)) {
+        if (array_key_exists('params', $req)) {
+            if (!self::isValidParams($req['params'])) {
                 throw new \InvalidArgumentException('params', -32600);
             }
         }
 
-        if (property_exists($req, 'id')) {
-            if (!self::isValidId($req->id)) {
+        if (array_key_exists('id', $req)) {
+            if (!self::isValidId($req['id'])) {
                 throw new \InvalidArgumentException('id', -32600);
             }
         }
 
-        $id = property_exists($req, 'id') ? $req->id : null;
-        $params = isset($req->params) ? $req->params : array();
+        $id = array_key_exists('id', $req) ? $req['id'] : null;
+        $params = isset($req['params']) ? $req['params'] : array();
 
-        return new self($id, $req->method, $params);
+        return new self($id, $req['method'], $params);
     }
 
     function id() {
