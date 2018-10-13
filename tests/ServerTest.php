@@ -38,6 +38,10 @@ class ServerTest extends TestCase
         $this->assertEquals(-32602, $res->error->code);
         $this->assertEquals('Invalid params', $res->error->message);
         $this->assertEquals('Params count', $res->error->data);
+
+        $res = json_decode($server->respond(new Request(1, 'twoParamsWithOpt', ['foo' =>'bar', 'baz' => 'foo'])));
+        $this->assertEquals(-32602, $res->error->code);
+        $this->assertEquals('Invalid params', $res->error->message);
     }
 
     function testApi() {
@@ -53,10 +57,64 @@ class ServerTest extends TestCase
         $this->assertEquals('foo', $data->result);
         $this->assertEquals(123, $data->id);
 
-        // $res = $server->respond(new Request(123, 'oneParam', ['foo' => 'bar']));
-        // var_dump($res);
-        // $data = json_decode($res);
-        // $this->assertEquals('bar', $data->result);
-        // $this->assertEquals(123, $data->id);
+        $res = $server->respond(new Request(123, 'oneParam', ['foo' => 'bar']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'optParam'));
+        $data = json_decode($res);
+        $this->assertEquals('foo', $data->result);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'optParam', ['bar']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'optParam', ['foo' => 'bar']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParams', ['bar', 'foo']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParams', ['foo' => 'bar', 'bar' => 'foo']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParamsWithOpt', ['bar' => 'foo', 'foo' => 'bar']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals('baz', $data->result->baz);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParamsWithOpt', ['bar' => 'foo', 'foo' => 'baz', 'baz' => 'bar']));
+        $data = json_decode($res);
+        $this->assertEquals('baz', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals('bar', $data->result->baz);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParamsWithOpt', ['bar', 'foo']));
+        $data = json_decode($res);
+        $this->assertEquals('bar', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals('baz', $data->result->baz);
+        $this->assertEquals(123, $data->id);
+
+        $res = $server->respond(new Request(123, 'twoParamsWithOpt', ['baz', 'foo', 'bar']));
+        $data = json_decode($res);
+        $this->assertEquals('baz', $data->result->foo);
+        $this->assertEquals('foo', $data->result->bar);
+        $this->assertEquals('bar', $data->result->baz);
+        $this->assertEquals(123, $data->id);
     }
 }

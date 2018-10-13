@@ -25,24 +25,24 @@ class Server
         }
 
         $class = new \ReflectionClass($this->api);
-        if (!$class->hasMethod($req->method())) {
-            return (string) (new Error(-32601, 'Method not found', $req->method()));
+        if (!$class->hasMethod($req->method)) {
+            return (string) (new Error(-32601, 'Method not found', $req->method));
         }
 
-        $method = $class->getMethod($req->method());
-        if (count($req->params()) < $method->getNumberOfRequiredParameters()) {
+        $method = $class->getMethod($req->method);
+        if (count($req->params) < $method->getNumberOfRequiredParameters()) {
             return (string) (new Error(-32602, 'Invalid params', 'Params count'));
         }
-        if (count($req->params()) > $method->getNumberOfParameters()) {
+        if (count($req->params) > $method->getNumberOfParameters()) {
             return (string) (new Error(-32602, 'Invalid params', 'Params count'));
         }
 
         $params = [];
         foreach ($method->getParameters() as $param) {
-            if (isset($req->params()[$param->getPosition()])) {
-                $params[] = $req->params()[$param->getPosition()];
-            } elseif (isset($req->params()[$param->getName()])) {
-                $params[] = $req->params()[$param->getName()];
+            if (isset($req->params[$param->getPosition()])) {
+                $params[] = $req->params[$param->getPosition()];
+            } elseif (isset($req->params[$param->getName()])) {
+                $params[] = $req->params[$param->getName()];
             } else {
                 if ($param->isDefaultValueAvailable()) {
                     $params[] = $param->getDefaultValue();
@@ -52,9 +52,9 @@ class Server
             }
         }
 
-        $m = $req->method();
+        $m = $req->method;
         $resp = $this->api->$m(...$params);
 
-        return (string) (new Response($req->id(), $resp));
+        return (string) (new Response($req->id, $resp));
     }
 }

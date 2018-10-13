@@ -27,6 +27,6 @@ class Api {
     }
 
     function throwEx() {
-        throw new \Exception('Foo', 123);
+        throw new \Exception('FooBar', 123, ['foo' => 'bar']);
     }
 }
