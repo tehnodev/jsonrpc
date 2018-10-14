@@ -128,5 +128,8 @@ class ServerTest extends TestCase
         $this->assertEquals('FooBar', $data['error']['message']);
         $this->assertEquals(123, $data['error']['code']);
         $this->assertEquals(['foo' => 'bar'], $data['error']['data']);
+
+        $res = $server->respond(new Request(null, 'noParams'));
+        $this->assertEquals('', $res);
     }
 }

@@ -66,6 +66,10 @@ class Server
             return (string) (new Error($e->getCode(), $e->getMessage()));
         }
 
+        if ($req->id === null) {
+            return '';
+        }
+        
         return (string) (new Response($req->id, $resp));
     }
 }
