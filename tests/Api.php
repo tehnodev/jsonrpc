@@ -6,9 +6,26 @@ use Tehnodev\JsonRpc\Exception as JsonRpcException;
 
 class Api
 {
+    function subtract($minuend, $subtrahend) {
+        return $minuend - $subtrahend;
+    }
+
+    function sum($a, $b, $c) {
+        return $a + $b + $c;
+    }
+
+    function update($a, $b, $c, $d, $e) {}
+
+    function foobar() {}
+
+    function get_data() {
+        return ['hello', 5];
+    }
+
     public function noParams()
     {
     }
+
 
     public function oneParam($foo)
     {

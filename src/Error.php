@@ -4,12 +4,14 @@ namespace Tehnodev\JsonRpc;
 
 class Error
 {
+    protected $id = null;
     protected $code;
     protected $message;
     protected $data;
 
-    public function __construct($code, $message, $data = null)
+    public function __construct($id, $code, $message, $data = null)
     {
+        $this->id = $id;
         $this->code = $code;
         $this->message = $message;
         $this->data = $data;
@@ -22,7 +24,8 @@ class Error
             'error' => [
                 'code' => $this->code,
                 'message' => $this->message
-            ]
+            ],
+            'id' => $this->id
         ];
 
         if ($this->data !== null) {
