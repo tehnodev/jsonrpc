@@ -1,12 +1,15 @@
 <?php
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Tehnodev\JsonRpc\Server;
 use Tehnodev\JsonRpc\Test\Api;
 
 // https://www.jsonrpc.org/specification#examples
-class ExamplesTest extends TestCase {
-    function testPositionalParams() {
+class ExamplesTest extends TestCase
+{
+    public function testPositionalParams()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -34,7 +37,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === 2);
     }
 
-    function testNamedParams() {
+    public function testNamedParams()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -62,7 +66,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === 4);
     }
 
-    function testNotification() {
+    public function testNotification()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -81,7 +86,8 @@ class ExamplesTest extends TestCase {
         $this->assertEquals('', $res);
     }
 
-    function testNonExistentMethod() {
+    public function testNonExistentMethod()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -97,7 +103,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === '1');
     }
 
-    function testInvalidJson() {
+    public function testInvalidJson()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond('{"jsonrpc": "2.0", "method": "foobar, "params": "bar", "baz]');
@@ -109,7 +116,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === null);
     }
 
-    function testInvalidRequestObject() {
+    public function testInvalidRequestObject()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -125,7 +133,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === null);
     }
 
-    function testBatchInvalidJson() {
+    public function testBatchInvalidJson()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond('
@@ -140,7 +149,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === null);
     }
 
-    function testEmptyArray() {
+    public function testEmptyArray()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond('[]');
@@ -152,7 +162,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res->id === null);
     }
 
-    function testBatchInvalidNotEmpty() {
+    public function testBatchInvalidNotEmpty()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond('[1]');
@@ -165,7 +176,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res[0]->id === null);
     }
 
-    function testBatchInvalid() {
+    public function testBatchInvalid()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond('[1, 2, 3]');
@@ -189,7 +201,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res[2]->id === null);
     }
 
-    function testBatch() {
+    public function testBatch()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([
@@ -227,7 +240,8 @@ class ExamplesTest extends TestCase {
         $this->assertTrue($res[4]->id === '9');
     }
 
-    function testBatchAllNotifications() {
+    public function testBatchAllNotifications()
+    {
         $server = new Server(new Api());
 
         $res = $server->respond(json_encode([

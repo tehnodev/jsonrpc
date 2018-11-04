@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Tehnodev\JsonRpc\Test;
 
@@ -6,19 +7,26 @@ use Tehnodev\JsonRpc\Exception as JsonRpcException;
 
 class Api
 {
-    function subtract($minuend, $subtrahend) {
+    public function subtract($minuend, $subtrahend)
+    {
         return $minuend - $subtrahend;
     }
 
-    function sum($a, $b, $c) {
+    public function sum($a, $b, $c)
+    {
         return $a + $b + $c;
     }
 
-    function update($a, $b, $c, $d, $e) {}
+    public function update($a, $b, $c, $d, $e)
+    {
+    }
 
-    function foobar() {}
+    public function foobar()
+    {
+    }
 
-    function get_data() {
+    public function get_data()
+    {
         return ['hello', 5];
     }
 

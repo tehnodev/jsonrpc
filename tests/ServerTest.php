@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Tehnodev\JsonRpc\Server;
@@ -109,7 +110,7 @@ class ServerTest extends TestCase
         $res = $server->respond(json_encode([
             'jsonrpc' => '2.0',
             'method' => 'optParam',
-            'param' => ['bar'],
+            'params' => ['bar'],
             'id' => 123
         ]));
         $data = json_decode($res);
@@ -124,7 +125,12 @@ class ServerTest extends TestCase
         $data = json_decode($res);
         $this->assertEquals('bar', $data->result);
 
-        $res = $server->respond(new Request(123, 'twoParams', ['bar', 'foo']));
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'twoParams',
+            'params' => ['bar', 'foo'],
+            'id' => 123
+        ]));
         $data = json_decode($res);
         $this->assertEquals('bar', $data->result->foo);
         $this->assertEquals('foo', $data->result->bar);

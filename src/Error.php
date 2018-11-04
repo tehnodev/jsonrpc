@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Tehnodev\JsonRpc;
 
 class Error
 {
-    protected $id = null;
     protected $code;
     protected $message;
-    protected $data;
+    protected $data = null;
+    protected $id = null;
 
     public function __construct($id, $code, $message, $data = null)
     {

@@ -16,7 +16,8 @@ class ErrorTest extends TestCase
         $this->assertTrue($data->id === 1);
     }
 
-    function testStringConversionWithPrimitiveData() {
+    public function testStringConversionWithPrimitiveData()
+    {
         $err = new Error(null, -32700, 'Parse error', 'foo');
         $data = json_decode($err);
         $this->assertEquals('2.0', $data->jsonrpc);
@@ -26,7 +27,8 @@ class ErrorTest extends TestCase
         $this->assertTrue($data->id === null);
     }
 
-    function testStringConversionWithStructuredData() {
+    public function testStringConversionWithStructuredData()
+    {
         $err = new Error(null, -32700, 'Parse error', ['foo' => 'bar']);
         $data = json_decode($err);
         $this->assertEquals('2.0', $data->jsonrpc);

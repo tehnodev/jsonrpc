@@ -40,7 +40,7 @@ class Server
                 }
                 try {
                     $res = $this->handle(new Request($r));
-                    if ($res === '') { // notification
+                    if ($res === '') {
                         continue;
                     }
                     $results[] = $res;
@@ -54,7 +54,8 @@ class Server
         return (string) new Error(null, -32600, 'Invalid Request');
     }
 
-    protected function handle(Request $req) {
+    protected function handle(Request $req)
+    {
         $class = new \ReflectionClass($this->api);
         if (!$class->hasMethod($req->method)) {
             if ($req->id === null) {
@@ -101,7 +102,6 @@ class Server
 
         $m = $req->method;
         try {
-            var_dump($params);
             $resp = $this->api->$m(...$params);
         } catch (Exception $e) {
             if ($req->id === null) {
