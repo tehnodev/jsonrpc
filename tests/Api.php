@@ -70,6 +70,11 @@ class Api
         throw new \Exception('Foo', 123);
     }
 
+    public function throwJsonRpcException()
+    {
+        throw new JsonRpcException('FooBar', 123);
+    }
+
     public function throwExceptionWithData()
     {
         throw new JsonRpcException('FooBar', 123, ['foo' => 'bar']);

@@ -62,13 +62,23 @@ class RequestTest extends TestCase
         ]);
     }
 
-    public function testConstructInvalidMethod()
+    public function testConstructInvalidMethodInt()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('method');
         new Request((object)[
             'jsonrpc' => '2.0',
             'method' => 1
+        ]);
+    }
+
+    public function testConstructInvalidMethodEmpty()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('method');
+        new Request((object)[
+            'jsonrpc' => '2.0',
+            'method' => ''
         ]);
     }
 
@@ -102,5 +112,17 @@ class RequestTest extends TestCase
             'method' => 'add',
             'params' => '1,2'
         ]);
+    }
+
+    function testGetUndefinedProp() {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Undefined property foo');
+        
+        $r = new Request((object)[
+            'jsonrpc' => '2.0',
+            'method' => 'add'
+        ]);
+
+        $foo = $r->foo;
     }
 }

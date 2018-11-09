@@ -20,6 +20,10 @@ class ServerTest extends TestCase
         $this->assertEquals(-32600, $res->error->code);
         $this->assertEquals('Invalid Request', $res->error->message);
 
+        $res = json_decode($server->respond(json_encode('foo')));
+        $this->assertEquals(-32600, $res->error->code);
+        $this->assertEquals('Invalid Request', $res->error->message);
+
         $res = json_decode($server->respond(json_encode([
             'jsonrpc' => '2.0',
             'method' => 'add',
@@ -210,7 +214,48 @@ class ServerTest extends TestCase
 
         $res = $server->respond(json_encode([
             'jsonrpc' => '2.0',
+            'method' => 'throwJsonRpcException',
+            'id' => 123
+        ]));
+        $data = json_decode($res, true);
+        $this->assertEquals('FooBar', $data['error']['message']);
+        $this->assertTrue($data['error']['code'] === 123);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
             'method' => 'noParams'
+        ]));
+        $this->assertEquals('', $res);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'oneParam'
+        ]));
+        $this->assertEquals('', $res);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'oneParam',
+            'params' => [1, 2]
+        ]));
+        $this->assertEquals('', $res);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'oneParam',
+            'params' => ['bar' => 'foo']
+        ]));
+        $this->assertEquals('', $res);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'throwJsonRpcException'
+        ]));
+        $this->assertEquals('', $res);
+
+        $res = $server->respond(json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'throwException'
         ]));
         $this->assertEquals('', $res);
     }
